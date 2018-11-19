@@ -1,3 +1,13 @@
+<!--
+  ~ Created by James Henderson on 2018
+  ~ Copyright (c) Hendercine Productions and James Henderson 2018.
+  ~ All rights reserved.
+  ~
+  ~ Last modified 11/18/18 10:29 PM
+  -->
+
 <resources>
     <string name="app_name">CodeWord</string>
+    <string name="letter_underscore">_</string>
+    <string name="countdown_start">6</string>
 </resources>

@@ -21,7 +21,13 @@
         <item name="android:layout_margin">0dp</item>
         <item name="android:textAppearance">@style/TextAppearance.AppCompat.Display4</item>
         <item name="android:textStyle">normal</item>
+        <item name="android:textColor">#FFF</item>
         <item name="android:gravity">center</item>
+        <item name="android:visibility">invisible</item>
+    </style>
+
+    <style name="AppTheme.Letters.underscores">
+        <item name="android:visibility">visible</item>
     </style>
 
 </resources>
