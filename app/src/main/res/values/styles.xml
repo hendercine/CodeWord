@@ -1,3 +1,11 @@
+<!--
+  ~ Created by James Henderson on 2018
+  ~ Copyright (c) Hendercine Productions and James Henderson 2018.
+  ~ All rights reserved.
+  ~
+  ~ Last modified 11/18/18 10:29 PM
+  -->
+
 <resources>
 
     <!-- Base application theme. -->
@@ -6,6 +14,14 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="AppTheme.Letters">
+        <item name="android:padding">4dp</item>
+        <item name="android:layout_margin">0dp</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Display4</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:gravity">center</item>
     </style>
 
 </resources>
