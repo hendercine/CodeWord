@@ -12,4 +12,5 @@
     <string name="countdown_start">6</string>
     <string name="used_letter">----</string>
     <string name="guess_a_letter">Guess a Letter</string>
+    <string name="submit">Submit</string>
 </resources>
