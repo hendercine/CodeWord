@@ -24,6 +24,8 @@ import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final String TRIES_COUNT = "triesCount";
+
     @BindView(R.id.guess_edit_text)
     EditText mGuessInput;
     @BindView(R.id.guess_button)
@@ -43,8 +45,8 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.countdown_view)
     TextView mCountdown;
 
-    private Editable mGuessStr;
-    private String mCodeWord = "Linked";
+    private String mGuessStr;
+    private String mCodeWord;
     private int mCount;
     private List<Integer> mCorrectGuessPositions;
 
@@ -56,59 +58,65 @@ public class MainActivity extends AppCompatActivity {
 
         if (savedInstanceState == null) {
             mCount = 6;
+        } else {
+            mCount = savedInstanceState.getInt(TRIES_COUNT);
         }
         mCountdown.setText(String.valueOf(mCount));
+        mCodeWord = "Linked";
         mGuessInput.setActivated(true);
         mGuessButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mGuessStr = mGuessInput.getText();
-                ArrayList<Integer> positions = (ArrayList<Integer>) checkGuess(mGuessStr
-                        .charAt(0));
-                if (positions != null) {
-                    revealCorrectPositions(positions);
+                Editable userInput = mGuessInput.getText();
+                mGuessStr = userInput.toString();
+                if (mGuessStr.length() != 0) {
+                    checkGuess(String.valueOf(mGuessStr).charAt(0),
+                            mCodeWord.toUpperCase());
+                    userInput.clear();
+                    mGuessInput.clearFocus();
                 }
             }
         });
     }
 
-    private List<Integer> checkGuess(char guessLetter) {
-
-        mCorrectGuessPositions = new ArrayList<>();
-        for (int i = 0; i < mCodeWord.length(); i++) {
-            if (mCodeWord.charAt(i) == guessLetter) {
-                mCorrectGuessPositions.add(i);
-            }
-        }
-
-        return mCorrectGuessPositions;
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putInt(TRIES_COUNT, mCount);
+        super.onSaveInstanceState(outState);
     }
 
-    private void revealCorrectPositions(ArrayList<Integer>
-                                                correctGuessPositions) {
+    private void checkGuess(char guessLetter, String codeWord) {
 
-        for (int i = 0; i < correctGuessPositions.size(); i++) {
-            if (correctGuessPositions.get(i) == 0) {
-                mLetterOne.setText(mCodeWord.charAt(0));
+        mCorrectGuessPositions = new ArrayList<>();
+        for (int i = 0; i < codeWord.length(); i++) {
+            if (codeWord.charAt(i) == guessLetter) {
+                revealCorrectPositions(i);
+            }
+        }
+    }
+
+    private void revealCorrectPositions(int correctGuessPositions) {
+            if (correctGuessPositions == 0) {
+                mLetterOne.setText(String.valueOf(mCodeWord.charAt(0)));
                 mLetterOne.setVisibility(View.VISIBLE);
-            } else if (correctGuessPositions.get(i) == 1) {
-                mLetterTwo.setText(mCodeWord.charAt(1));
+            } else if (correctGuessPositions == 1) {
+                mLetterTwo.setText(String.valueOf(mCodeWord.charAt(1)));
                 mLetterTwo.setVisibility(View.VISIBLE);
-            } else if (correctGuessPositions.get(i) == 2) {
-                mLetterThree.setText(mCodeWord.charAt(2));
+            } else if (correctGuessPositions == 2) {
+                mLetterThree.setText(String.valueOf(mCodeWord.charAt(2)));
                 mLetterThree.setVisibility(View.VISIBLE);
-            } else if (correctGuessPositions.get(i) == 3) {
-                mLetterFour.setText(mCodeWord.charAt(3));
+            } else if (correctGuessPositions == 3) {
+                mLetterFour.setText(String.valueOf(mCodeWord.charAt(3)));
                 mLetterFour.setVisibility(View.VISIBLE);
-            } else if (correctGuessPositions.get(i) == 4) {
-                mLetterFive.setText(mCodeWord.charAt(4));
+            } else if (correctGuessPositions == 4) {
+                mLetterFive.setText(String.valueOf(mCodeWord.charAt(4)));
                 mLetterFive.setVisibility(View.VISIBLE);
-            } else if (correctGuessPositions.get(i) == 5) {
-                mLetterSix.setText(mCodeWord.charAt(5));
+            } else if (correctGuessPositions == 5) {
+                mLetterSix.setText(String.valueOf(mCodeWord
+                        .charAt(5)));
                 mLetterSix.setVisibility(View.VISIBLE);
             } else {
                 mCountdown.setText(String.valueOf(mCount - 1));
             }
-        }
     }
 }
