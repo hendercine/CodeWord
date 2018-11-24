@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -97,9 +98,16 @@ public class MainActivity extends AppCompatActivity {
                 correctGuess = true;
             }
         }
-        if (!correctGuess) {
+        if (!correctGuess && mCount > 1) {
             mCountdown.setText(String.valueOf(mCount - 1));
             mCount--;
+        } else if (!correctGuess && mCount == 1){
+            mCountdown.setText(String.valueOf(mCount - 1));
+            Toast.makeText(this,
+                    "NO MORE GUESSES\nGAME OVER",
+                    Toast.LENGTH_LONG)
+                    .show();
+            revealCorrectPositions(6);
         }
     }
 
@@ -127,6 +135,20 @@ public class MainActivity extends AppCompatActivity {
                 mLetterFive.setVisibility(View.VISIBLE);
                 break;
             case 5:
+                mLetterSix.setText(String.valueOf(mCodeWord.charAt(5)));
+                mLetterSix.setVisibility(View.VISIBLE);
+                break;
+            case 6:
+                mLetterOne.setText(String.valueOf(mCodeWord.charAt(0)));
+                mLetterOne.setVisibility(View.VISIBLE);
+                mLetterTwo.setText(String.valueOf(mCodeWord.charAt(1)));
+                mLetterTwo.setVisibility(View.VISIBLE);
+                mLetterThree.setText(String.valueOf(mCodeWord.charAt(2)));
+                mLetterThree.setVisibility(View.VISIBLE);
+                mLetterFour.setText(String.valueOf(mCodeWord.charAt(3)));
+                mLetterFour.setVisibility(View.VISIBLE);
+                mLetterFive.setText(String.valueOf(mCodeWord.charAt(4)));
+                mLetterFive.setVisibility(View.VISIBLE);
                 mLetterSix.setText(String.valueOf(mCodeWord.charAt(5)));
                 mLetterSix.setVisibility(View.VISIBLE);
                 break;
