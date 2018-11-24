@@ -17,9 +17,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -49,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
     private String mGuessStr;
     private String mCodeWord;
     private int mCount;
-    private List<Integer> mCorrectGuessPositions;
+    private int mCorrectCount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (savedInstanceState == null) {
             mCount = 6;
+            mCorrectCount = 0;
         } else {
             mCount = savedInstanceState.getInt(TRIES_COUNT);
         }
@@ -90,7 +88,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void checkGuess(char guessLetter, String codeWord) {
 
-        mCorrectGuessPositions = new ArrayList<>();
         boolean correctGuess = false;
         for (int i = 0; i < codeWord.length(); i++) {
             if (codeWord.charAt(i) == guessLetter) {
@@ -98,6 +95,16 @@ public class MainActivity extends AppCompatActivity {
                 correctGuess = true;
             }
         }
+        // Check for victory conditions
+        if (mCorrectCount == mCodeWord.length()) {
+            Toast.makeText(this,
+                    "YOU HAVE DISCOVERED THE CODE WORD!!\nYOU WIN!!",
+                    Toast.LENGTH_LONG)
+                    .show();
+
+            resetGame();
+        }
+        // Check for game end conditions
         if (!correctGuess && mCount > 1) {
             mCountdown.setText(String.valueOf(mCount - 1));
             mCount--;
@@ -108,6 +115,8 @@ public class MainActivity extends AppCompatActivity {
                     Toast.LENGTH_LONG)
                     .show();
             revealCorrectPositions(6);
+
+            resetGame();
         }
     }
 
@@ -117,26 +126,32 @@ public class MainActivity extends AppCompatActivity {
             case 0:
                 mLetterOne.setText(String.valueOf(mCodeWord.charAt(0)).toUpperCase());
                 mLetterOne.setVisibility(View.VISIBLE);
+                mCorrectCount++;
                 break;
             case 1:
                 mLetterTwo.setText(String.valueOf(mCodeWord.charAt(1)).toUpperCase());
                 mLetterTwo.setVisibility(View.VISIBLE);
+                mCorrectCount++;
                 break;
             case 2:
                 mLetterThree.setText(String.valueOf(mCodeWord.charAt(2)).toUpperCase());
                 mLetterThree.setVisibility(View.VISIBLE);
+                mCorrectCount++;
                 break;
             case 3:
                 mLetterFour.setText(String.valueOf(mCodeWord.charAt(3)).toUpperCase());
                 mLetterFour.setVisibility(View.VISIBLE);
+                mCorrectCount++;
                 break;
             case 4:
                 mLetterFive.setText(String.valueOf(mCodeWord.charAt(4)).toUpperCase());
                 mLetterFive.setVisibility(View.VISIBLE);
+                mCorrectCount++;
                 break;
             case 5:
                 mLetterSix.setText(String.valueOf(mCodeWord.charAt(5)).toUpperCase());
                 mLetterSix.setVisibility(View.VISIBLE);
+                mCorrectCount++;
                 break;
             case 6:
                 mLetterOne.setText(String.valueOf(mCodeWord.charAt(0)).toUpperCase());
@@ -153,5 +168,9 @@ public class MainActivity extends AppCompatActivity {
                 mLetterSix.setVisibility(View.VISIBLE);
                 break;
         }
+    }
+
+    private void resetGame() {
+        MainActivity.this.recreate();
     }
 }
