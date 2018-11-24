@@ -101,30 +101,35 @@ public class MainActivity extends AppCompatActivity {
             mCountdown.setText(String.valueOf(mCount - 1));
             mCount--;
         }
-
-
     }
 
     private void revealCorrectPositions(int correctGuessPositions) {
-        if (correctGuessPositions == 0) {
-            mLetterOne.setText(String.valueOf(mCodeWord.charAt(0)));
-            mLetterOne.setVisibility(View.VISIBLE);
-        } else if (correctGuessPositions == 1) {
-            mLetterTwo.setText(String.valueOf(mCodeWord.charAt(1)));
-            mLetterTwo.setVisibility(View.VISIBLE);
-        } else if (correctGuessPositions == 2) {
-            mLetterThree.setText(String.valueOf(mCodeWord.charAt(2)));
-            mLetterThree.setVisibility(View.VISIBLE);
-        } else if (correctGuessPositions == 3) {
-            mLetterFour.setText(String.valueOf(mCodeWord.charAt(3)));
-            mLetterFour.setVisibility(View.VISIBLE);
-        } else if (correctGuessPositions == 4) {
-            mLetterFive.setText(String.valueOf(mCodeWord.charAt(4)));
-            mLetterFive.setVisibility(View.VISIBLE);
-        } else if (correctGuessPositions == 5) {
-            mLetterSix.setText(String.valueOf(mCodeWord
-                    .charAt(5)));
-            mLetterSix.setVisibility(View.VISIBLE);
+
+        switch (correctGuessPositions) {
+            case 0:
+                mLetterOne.setText(String.valueOf(mCodeWord.charAt(0)));
+                mLetterOne.setVisibility(View.VISIBLE);
+                break;
+            case 1:
+                mLetterTwo.setText(String.valueOf(mCodeWord.charAt(1)));
+                mLetterTwo.setVisibility(View.VISIBLE);
+                break;
+            case 2:
+                mLetterThree.setText(String.valueOf(mCodeWord.charAt(2)));
+                mLetterThree.setVisibility(View.VISIBLE);
+                break;
+            case 3:
+                mLetterFour.setText(String.valueOf(mCodeWord.charAt(3)));
+                mLetterFour.setVisibility(View.VISIBLE);
+                break;
+            case 4:
+                mLetterFive.setText(String.valueOf(mCodeWord.charAt(4)));
+                mLetterFive.setVisibility(View.VISIBLE);
+                break;
+            case 5:
+                mLetterSix.setText(String.valueOf(mCodeWord.charAt(5)));
+                mLetterSix.setVisibility(View.VISIBLE);
+                break;
         }
     }
 }
