@@ -18,6 +18,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -42,11 +44,15 @@ public class MainActivity extends AppCompatActivity {
     TextView mLetterSix;
     @BindView(R.id.countdown_view)
     TextView mCountdown;
+    @BindView(R.id.guessed_letters_view)
+    TextView mGuessedLetters;
 
     private String mGuessStr;
     private String mCodeWord;
     private int mCount;
     private int mCorrectCount;
+    private ArrayList<String> mEnteredLetters;
+    private StringBuilder mGuessedLettersBuilder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,21 +69,35 @@ public class MainActivity extends AppCompatActivity {
         mCountdown.setText(String.valueOf(mCount));
         mCodeWord = "Street";
         mGuessInput.setActivated(true);
+        mEnteredLetters = new ArrayList<>();
+        mGuessedLettersBuilder = new StringBuilder();
+        mGuessedLetters.setText("");
     }
 
     @OnClick(R.id.guess_button)
     void submit() {
         Editable userInput = mGuessInput.getText();
         mGuessStr = userInput.toString();
+        mEnteredLetters.add(mGuessStr);
         if (mGuessStr.length() != 0) {
             checkGuess(
                     String.valueOf(mGuessStr).charAt(0),
                     mCodeWord.toUpperCase()
             );
+            addGuessedLettersToView();
+
             userInput.clear();
             mGuessInput.clearFocus();
             hideKeyboard(MainActivity.this);
         }
+    }
+
+    private void addGuessedLettersToView() {
+        for (String letter : mEnteredLetters) {
+            mGuessedLettersBuilder.append(letter);
+        }
+        String displayedGuesses = mGuessedLettersBuilder.toString();
+        mGuessedLetters.setText(displayedGuesses);
     }
 
     @OnClick(R.id.reset_btn)
