@@ -170,7 +170,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void resetGame() {
+    public void resetGame() {
         MainActivity.this.recreate();
     }
 }

@@ -13,4 +13,6 @@
     <string name="used_letter">----</string>
     <string name="guess_a_letter">Guess a Letter</string>
     <string name="submit">Submit</string>
+    <string name="guessed_letters">Guessed Letters</string>
+    <string name="reset_btn">Reset</string>
 </resources>
