@@ -12,13 +12,13 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -26,8 +26,6 @@ public class MainActivity extends AppCompatActivity {
 
     @BindView(R.id.guess_edit_text)
     EditText mGuessInput;
-    @BindView(R.id.guess_button)
-    Button mGuessButton;
     @BindView(R.id.letter_1)
     TextView mLetterOne;
     @BindView(R.id.letter_2)
@@ -63,21 +61,25 @@ public class MainActivity extends AppCompatActivity {
         mCountdown.setText(String.valueOf(mCount));
         mCodeWord = "Street";
         mGuessInput.setActivated(true);
-        mGuessButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Editable userInput = mGuessInput.getText();
-                mGuessStr = userInput.toString();
-                if (mGuessStr.length() != 0) {
-                    checkGuess(
-                            String.valueOf(mGuessStr).charAt(0),
-                            mCodeWord.toUpperCase()
-                    );
-                    userInput.clear();
-                    mGuessInput.clearFocus();
-                }
-            }
-        });
+    }
+
+    @OnClick(R.id.guess_button)
+    void submit() {
+        Editable userInput = mGuessInput.getText();
+        mGuessStr = userInput.toString();
+        if (mGuessStr.length() != 0) {
+            checkGuess(
+                    String.valueOf(mGuessStr).charAt(0),
+                    mCodeWord.toUpperCase()
+            );
+            userInput.clear();
+            mGuessInput.clearFocus();
+        }
+    }
+
+    @OnClick(R.id.reset_btn)
+    void reset() {
+        resetGame();
     }
 
     @Override
@@ -171,6 +173,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void resetGame() {
+        mCount = 6;
         MainActivity.this.recreate();
     }
 }
