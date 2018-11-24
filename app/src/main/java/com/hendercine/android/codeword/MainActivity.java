@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
             mCount = savedInstanceState.getInt(TRIES_COUNT);
         }
         mCountdown.setText(String.valueOf(mCount));
-        mCodeWord = "Linked";
+        mCodeWord = "Street";
         mGuessInput.setActivated(true);
         mGuessButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -115,41 +115,41 @@ public class MainActivity extends AppCompatActivity {
 
         switch (correctGuessPositions) {
             case 0:
-                mLetterOne.setText(String.valueOf(mCodeWord.charAt(0)));
+                mLetterOne.setText(String.valueOf(mCodeWord.charAt(0)).toUpperCase());
                 mLetterOne.setVisibility(View.VISIBLE);
                 break;
             case 1:
-                mLetterTwo.setText(String.valueOf(mCodeWord.charAt(1)));
+                mLetterTwo.setText(String.valueOf(mCodeWord.charAt(1)).toUpperCase());
                 mLetterTwo.setVisibility(View.VISIBLE);
                 break;
             case 2:
-                mLetterThree.setText(String.valueOf(mCodeWord.charAt(2)));
+                mLetterThree.setText(String.valueOf(mCodeWord.charAt(2)).toUpperCase());
                 mLetterThree.setVisibility(View.VISIBLE);
                 break;
             case 3:
-                mLetterFour.setText(String.valueOf(mCodeWord.charAt(3)));
+                mLetterFour.setText(String.valueOf(mCodeWord.charAt(3)).toUpperCase());
                 mLetterFour.setVisibility(View.VISIBLE);
                 break;
             case 4:
-                mLetterFive.setText(String.valueOf(mCodeWord.charAt(4)));
+                mLetterFive.setText(String.valueOf(mCodeWord.charAt(4)).toUpperCase());
                 mLetterFive.setVisibility(View.VISIBLE);
                 break;
             case 5:
-                mLetterSix.setText(String.valueOf(mCodeWord.charAt(5)));
+                mLetterSix.setText(String.valueOf(mCodeWord.charAt(5)).toUpperCase());
                 mLetterSix.setVisibility(View.VISIBLE);
                 break;
             case 6:
-                mLetterOne.setText(String.valueOf(mCodeWord.charAt(0)));
+                mLetterOne.setText(String.valueOf(mCodeWord.charAt(0)).toUpperCase());
                 mLetterOne.setVisibility(View.VISIBLE);
-                mLetterTwo.setText(String.valueOf(mCodeWord.charAt(1)));
+                mLetterTwo.setText(String.valueOf(mCodeWord.charAt(1)).toUpperCase());
                 mLetterTwo.setVisibility(View.VISIBLE);
-                mLetterThree.setText(String.valueOf(mCodeWord.charAt(2)));
+                mLetterThree.setText(String.valueOf(mCodeWord.charAt(2)).toUpperCase());
                 mLetterThree.setVisibility(View.VISIBLE);
-                mLetterFour.setText(String.valueOf(mCodeWord.charAt(3)));
+                mLetterFour.setText(String.valueOf(mCodeWord.charAt(3)).toUpperCase());
                 mLetterFour.setVisibility(View.VISIBLE);
-                mLetterFive.setText(String.valueOf(mCodeWord.charAt(4)));
+                mLetterFive.setText(String.valueOf(mCodeWord.charAt(4)).toUpperCase());
                 mLetterFive.setVisibility(View.VISIBLE);
-                mLetterSix.setText(String.valueOf(mCodeWord.charAt(5)));
+                mLetterSix.setText(String.valueOf(mCodeWord.charAt(5)).toUpperCase());
                 mLetterSix.setVisibility(View.VISIBLE);
                 break;
         }
