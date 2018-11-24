@@ -14,6 +14,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimaryDark"
+    android:fitsSystemWindows="true"
     tools:context=".MainActivity">
 
     <TextView
@@ -200,7 +201,6 @@
         android:isScrollContainer="false"
         android:linksClickable="false"
         android:longClickable="false"
-        android:text="@string/countdown_start"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Display4"
         android:textColor="@color/colorPrimary"
@@ -208,7 +208,8 @@
         app:layout_constraintBottom_toTopOf="@+id/top_divider"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="@string/countdown_start"/>
 
     <View
         android:id="@+id/top_divider"
