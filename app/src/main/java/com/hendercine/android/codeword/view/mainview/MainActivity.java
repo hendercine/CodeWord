@@ -3,10 +3,10 @@
  * Copyright (c) Hendercine Productions and James Henderson 2018.
  * All rights reserved.
  *
- * Last modified 11/18/18 10:29 PM
+ * Last modified 11/24/18 2:43 PM
  */
 
-package com.hendercine.android.codeword;
+package com.hendercine.android.codeword.view.mainview;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -17,6 +17,8 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.hendercine.android.codeword.R;
 
 import java.util.ArrayList;
 
@@ -74,8 +76,23 @@ public class MainActivity extends AppCompatActivity {
         mGuessedLetters.setText("");
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putInt(TRIES_COUNT, mCount);
+        super.onSaveInstanceState(outState);
+    }
+
     @OnClick(R.id.guess_button)
     void submit() {
+        submitLetter();
+    }
+
+    @OnClick(R.id.reset_btn)
+    void reset() {
+        resetGame();
+    }
+
+    private void submitLetter() {
         Editable userInput = mGuessInput.getText();
         mGuessStr = userInput.toString();
         mEnteredLetters.add(mGuessStr);
@@ -85,30 +102,10 @@ public class MainActivity extends AppCompatActivity {
                     mCodeWord.toUpperCase()
             );
             addGuessedLettersToView();
-
             userInput.clear();
             mGuessInput.clearFocus();
             hideKeyboard(MainActivity.this);
         }
-    }
-
-    private void addGuessedLettersToView() {
-        for (String letter : mEnteredLetters) {
-            mGuessedLettersBuilder.append(letter);
-        }
-        String displayedGuesses = mGuessedLettersBuilder.toString();
-        mGuessedLetters.setText(displayedGuesses);
-    }
-
-    @OnClick(R.id.reset_btn)
-    void reset() {
-        resetGame();
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        outState.putInt(TRIES_COUNT, mCount);
-        super.onSaveInstanceState(outState);
     }
 
     private void checkGuess(char guessLetter, String codeWord) {
@@ -143,6 +140,14 @@ public class MainActivity extends AppCompatActivity {
 
             resetGame();
         }
+    }
+
+    private void addGuessedLettersToView() {
+        for (String letter : mEnteredLetters) {
+            mGuessedLettersBuilder.append(letter);
+        }
+        String displayedGuesses = mGuessedLettersBuilder.toString();
+        mGuessedLetters.setText(displayedGuesses);
     }
 
     private void revealCorrectPositions(int correctGuessPositions) {
@@ -195,11 +200,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void resetGame() {
-        mCount = 6;
-        MainActivity.this.recreate();
-    }
-
     public static void hideKeyboard(Activity activity) {
         InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
         //Find the currently focused view, so we can grab the correct window token from it.
@@ -211,5 +211,10 @@ public class MainActivity extends AppCompatActivity {
         if (imm != null) {
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
+    }
+
+    public void resetGame() {
+        mCount = 6;
+        MainActivity.this.recreate();
     }
 }
