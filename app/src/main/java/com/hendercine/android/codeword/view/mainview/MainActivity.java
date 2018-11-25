@@ -21,6 +21,8 @@ import android.widget.Toast;
 import com.hendercine.android.codeword.R;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Random;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -55,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
     private int mCorrectCount;
     private ArrayList<String> mEnteredLetters;
     private StringBuilder mGuessedLettersBuilder;
+    private ArrayList<String> mCodeWordsList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +72,9 @@ public class MainActivity extends AppCompatActivity {
             mCount = savedInstanceState.getInt(TRIES_COUNT);
         }
         mCountdown.setText(String.valueOf(mCount));
-        mCodeWord = "Street";
+        mCodeWordsList = new ArrayList<>();
+        mCodeWordsList.addAll(Arrays.asList("linked", "inmail", "street"));
+        mCodeWord = mCodeWordsList.get(new Random().nextInt(mCodeWordsList.size()));
         mGuessInput.setActivated(true);
         mEnteredLetters = new ArrayList<>();
         mGuessedLettersBuilder = new StringBuilder();
