@@ -23,6 +23,8 @@ import com.hendercine.android.codeword.R;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 import butterknife.BindView;
@@ -58,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
     private String mCodeWord;
     private int mCount;
     private int mCorrectCount;
-    private ArrayList<String> mEnteredLetters;
+    private char[] mEnteredLetters;
     private StringBuilder mGuessedLettersBuilder;
     private ArrayList<String> mCodeWordsList;
     private Editable mUserInput;
@@ -80,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
         mCodeWordsList.addAll(Arrays.asList("linked", "inmail", "street"));
         mCodeWord = mCodeWordsList.get(new Random().nextInt(mCodeWordsList.size()));
         mGuessInput.setActivated(true);
-        mEnteredLetters = new ArrayList<>();
+        mEnteredLetters = new char[mCodeWord.length()];
         mGuessedLettersBuilder = new StringBuilder();
         mGuessedLetters.setText("");
         hideKeyboardOnKeyTouch(mGuessInput);
@@ -105,13 +107,11 @@ public class MainActivity extends AppCompatActivity {
     private void submitLetter() {
         mUserInput = mGuessInput.getText();
         mGuessStr = mUserInput.toString();
-        mEnteredLetters.add(mGuessStr);
         if (mGuessStr.length() != 0) {
             checkGuess(
                     String.valueOf(mGuessStr).charAt(0),
                     mCodeWord.toUpperCase()
             );
-            addGuessedLettersToView();
             mUserInput.clear();
             mGuessInput.clearFocus();
             hideKeyboard(MainActivity.this);
@@ -139,6 +139,8 @@ public class MainActivity extends AppCompatActivity {
         // Check for game end conditions
         if (!correctGuess && mCount > 1) {
             mCountdown.setText(String.valueOf(mCount - 1));
+            mEnteredLetters = String.valueOf(guessLetter).toCharArray();
+            addGuessedLettersToView();
             mCount--;
         } else if (!correctGuess && mCount == 1){
             mCountdown.setText(String.valueOf(mCount - 1));
@@ -153,11 +155,25 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void addGuessedLettersToView() {
-        for (String letter : mEnteredLetters) {
-            mGuessedLettersBuilder.append(letter);
+            // Map entered chars
+            Map<Character, Integer> charMap = new HashMap<>();
+            for (char c : mEnteredLetters) {
+                if (charMap.containsKey(c)) {
+                    int count = charMap.get(c);
+                    charMap.put(c, ++count);
+                } else {
+                    charMap.put(c, 1);
+                }
         }
-        String displayedGuesses = mGuessedLettersBuilder.toString();
-        mGuessedLetters.setText(displayedGuesses);
+        int charCount = 1;
+        for (char c : charMap.keySet()) {
+            if (charMap.get(c) == charCount) {
+                mGuessedLetters.setText(mGuessedLettersBuilder
+                        .append(c).toString());
+                charCount++;
+            }
+        }
+//        String displayedGuesses = mGuessedLettersBuilder.toString();
     }
 
     private void revealCorrectPositions(int correctGuessPositions) {
