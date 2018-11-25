@@ -12,6 +12,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -27,6 +28,8 @@ import java.util.Random;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static android.widget.TextView.OnEditorActionListener;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -58,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<String> mEnteredLetters;
     private StringBuilder mGuessedLettersBuilder;
     private ArrayList<String> mCodeWordsList;
+    private Editable mUserInput;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
         mEnteredLetters = new ArrayList<>();
         mGuessedLettersBuilder = new StringBuilder();
         mGuessedLetters.setText("");
+        hideKeyboardOnKeyTouch(mGuessInput);
     }
 
     @Override
@@ -98,8 +103,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void submitLetter() {
-        Editable userInput = mGuessInput.getText();
-        mGuessStr = userInput.toString();
+        mUserInput = mGuessInput.getText();
+        mGuessStr = mUserInput.toString();
         mEnteredLetters.add(mGuessStr);
         if (mGuessStr.length() != 0) {
             checkGuess(
@@ -107,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
                     mCodeWord.toUpperCase()
             );
             addGuessedLettersToView();
-            userInput.clear();
+            mUserInput.clear();
             mGuessInput.clearFocus();
             hideKeyboard(MainActivity.this);
         }
@@ -216,6 +221,20 @@ public class MainActivity extends AppCompatActivity {
         if (imm != null) {
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
+    }
+
+    public void hideKeyboardOnKeyTouch(EditText editText) {
+        final int generatedKeyCode = KeyEvent.getMaxKeyCode();
+        editText.setOnEditorActionListener(new OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (event.getAction() == generatedKeyCode) {
+                 hideKeyboard(MainActivity.this);
+                }
+                return false;
+            }
+        });
+
     }
 
     public void resetGame() {
