@@ -31,8 +31,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static android.widget.TextView.OnEditorActionListener;
-
 public class MainActivity extends AppCompatActivity {
 
     private static final String TRIES_COUNT = "triesCount";
@@ -129,9 +127,11 @@ public class MainActivity extends AppCompatActivity {
         }
         // Check for victory conditions
         if (mCorrectCount == mCodeWord.length()) {
-            Toast.makeText(this,
+            Toast.makeText(
+                    this,
                     "YOU HAVE DISCOVERED THE CODE WORD!!\nYOU WIN!!",
-                    Toast.LENGTH_LONG)
+                    Toast.LENGTH_LONG
+            )
                     .show();
 
             resetGame();
@@ -142,11 +142,13 @@ public class MainActivity extends AppCompatActivity {
             mEnteredLetters = String.valueOf(guessLetter).toCharArray();
             addGuessedLettersToView();
             mCount--;
-        } else if (!correctGuess && mCount == 1){
+        } else if (!correctGuess && mCount == 1) {
             mCountdown.setText(String.valueOf(mCount - 1));
-            Toast.makeText(this,
+            Toast.makeText(
+                    this,
                     "NO MORE GUESSES\nGAME OVER",
-                    Toast.LENGTH_LONG)
+                    Toast.LENGTH_LONG
+            )
                     .show();
             revealCorrectPositions(6);
 
@@ -155,15 +157,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void addGuessedLettersToView() {
-            // Map entered chars
-            Map<Character, Integer> charMap = new HashMap<>();
-            for (char c : mEnteredLetters) {
-                if (charMap.containsKey(c)) {
-                    int count = charMap.get(c);
-                    charMap.put(c, ++count);
-                } else {
-                    charMap.put(c, 1);
-                }
+        // Map entered chars
+        Map<Character, Integer> charMap = new HashMap<>();
+        for (char c : mEnteredLetters) {
+            if (charMap.containsKey(c)) {
+                int count = charMap.get(c);
+                charMap.put(c, ++count);
+            } else {
+                charMap.put(c, 1);
+            }
         }
         int charCount = 1;
         for (char c : charMap.keySet()) {
@@ -173,54 +175,65 @@ public class MainActivity extends AppCompatActivity {
                 charCount++;
             }
         }
-//        String displayedGuesses = mGuessedLettersBuilder.toString();
     }
 
     private void revealCorrectPositions(int correctGuessPositions) {
 
         switch (correctGuessPositions) {
             case 0:
-                mLetterOne.setText(String.valueOf(mCodeWord.charAt(0)).toUpperCase());
+                mLetterOne.setText(String.valueOf(mCodeWord.charAt(0))
+                        .toUpperCase());
                 mLetterOne.setVisibility(View.VISIBLE);
                 mCorrectCount++;
                 break;
             case 1:
-                mLetterTwo.setText(String.valueOf(mCodeWord.charAt(1)).toUpperCase());
+                mLetterTwo.setText(String.valueOf(mCodeWord.charAt(1))
+                        .toUpperCase());
                 mLetterTwo.setVisibility(View.VISIBLE);
                 mCorrectCount++;
                 break;
             case 2:
-                mLetterThree.setText(String.valueOf(mCodeWord.charAt(2)).toUpperCase());
+                mLetterThree.setText(String.valueOf(mCodeWord.charAt(2))
+                        .toUpperCase());
                 mLetterThree.setVisibility(View.VISIBLE);
                 mCorrectCount++;
                 break;
             case 3:
-                mLetterFour.setText(String.valueOf(mCodeWord.charAt(3)).toUpperCase());
+                mLetterFour.setText(String.valueOf(mCodeWord.charAt(3))
+                        .toUpperCase());
                 mLetterFour.setVisibility(View.VISIBLE);
                 mCorrectCount++;
                 break;
             case 4:
-                mLetterFive.setText(String.valueOf(mCodeWord.charAt(4)).toUpperCase());
+                mLetterFive.setText(String.valueOf(mCodeWord.charAt(4))
+                        .toUpperCase());
                 mLetterFive.setVisibility(View.VISIBLE);
                 mCorrectCount++;
                 break;
             case 5:
-                mLetterSix.setText(String.valueOf(mCodeWord.charAt(5)).toUpperCase());
+                mLetterSix.setText(String.valueOf(mCodeWord.charAt(5))
+                        .toUpperCase());
                 mLetterSix.setVisibility(View.VISIBLE);
                 mCorrectCount++;
                 break;
             case 6:
-                mLetterOne.setText(String.valueOf(mCodeWord.charAt(0)).toUpperCase());
+                mLetterOne.setText(String.valueOf(mCodeWord.charAt(0))
+                        .toUpperCase());
                 mLetterOne.setVisibility(View.VISIBLE);
-                mLetterTwo.setText(String.valueOf(mCodeWord.charAt(1)).toUpperCase());
+                mLetterTwo.setText(String.valueOf(mCodeWord.charAt(1))
+                        .toUpperCase());
                 mLetterTwo.setVisibility(View.VISIBLE);
-                mLetterThree.setText(String.valueOf(mCodeWord.charAt(2)).toUpperCase());
+                mLetterThree.setText(String.valueOf(mCodeWord.charAt(2))
+                        .toUpperCase());
                 mLetterThree.setVisibility(View.VISIBLE);
-                mLetterFour.setText(String.valueOf(mCodeWord.charAt(3)).toUpperCase());
+                mLetterFour.setText(String.valueOf(mCodeWord.charAt(3))
+                        .toUpperCase());
                 mLetterFour.setVisibility(View.VISIBLE);
-                mLetterFive.setText(String.valueOf(mCodeWord.charAt(4)).toUpperCase());
+                mLetterFive.setText(String.valueOf(mCodeWord.charAt(4))
+                        .toUpperCase());
                 mLetterFive.setVisibility(View.VISIBLE);
-                mLetterSix.setText(String.valueOf(mCodeWord.charAt(5)).toUpperCase());
+                mLetterSix.setText(String.valueOf(mCodeWord.charAt(5))
+                        .toUpperCase());
                 mLetterSix.setVisibility(View.VISIBLE);
                 break;
         }
@@ -240,17 +253,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void hideKeyboardOnKeyTouch(EditText editText) {
-        final int generatedKeyCode = KeyEvent.getMaxKeyCode();
-        editText.setOnEditorActionListener(new OnEditorActionListener() {
+        final int generatedKeyCode = KeyEvent.keyCodeFromString
+                (editText.getText().toString());
+        editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (event.getAction() == generatedKeyCode) {
-                 hideKeyboard(MainActivity.this);
+                    hideKeyboard(MainActivity.this);
                 }
                 return false;
             }
         });
-
     }
 
     public void resetGame() {
