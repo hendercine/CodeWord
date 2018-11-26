@@ -203,6 +203,7 @@ public class MainActivity extends AppCompatActivity {
                 charMap.put(c, 1);
             }
         }
+        // Check mapped letters for duplicates and only display them once
         int charCount = 1;
         for (char c : charMap.keySet()) {
             if (charMap.get(c) == charCount) {
@@ -277,7 +278,9 @@ public class MainActivity extends AppCompatActivity {
 
     public static void hideKeyboard(Context context, View view) {
         InputMethodManager imm = (InputMethodManager) context.getSystemService(Activity.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        if (imm != null) {
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
     }
 
 //    public static void hideKeyboard(Activity activity) {

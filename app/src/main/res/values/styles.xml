@@ -6,7 +6,7 @@
   ~ Last modified 11/18/18 10:29 PM
   -->
 
-<resources>
+<resources xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
@@ -20,10 +20,12 @@
         <item name="android:padding">4dp</item>
         <item name="android:layout_marginStart">4dp</item>
         <item name="android:layout_marginEnd">4dp</item>
-        <item name="app:autoSizeTextType">uniform</item>
-        <item name="app:autoSizeMinTextSize">64sp</item>
-        <item name="app:autoSizeMaxTextSize">72sp</item>
-        <item name="app:autoSizeStepGranularity">2sp</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Display3</item>
+        <item name="android:textSize">64sp</item>
+        <!--<item name="app:autoSizeTextType">uniform</item>-->
+        <!--<item name="app:autoSizeMinTextSize">64sp</item>-->
+        <!--<item name="app:autoSizeMaxTextSize">72sp</item>-->
+        <!--<item name="app:autoSizeStepGranularity">2sp</item>-->
         <item name="android:textStyle">normal</item>
         <item name="android:textColor">#FFF</item>
         <item name="android:gravity">center</item>

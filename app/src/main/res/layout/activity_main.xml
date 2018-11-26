@@ -67,7 +67,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            tools:text="L"/>
+            tools:text="M"/>
 
         <TextView
             android:id="@+id/letter_2"
@@ -181,8 +181,10 @@
         android:background="@color/colorAccent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/top_divider"/>
+        app:layout_constraintTop_toBottomOf="@+id/top_divider"
+        app:layout_constraintVertical_bias="0.353"/>
 
     <android.support.constraint.Group
         android:id="@+id/buttons_edittext"
@@ -199,8 +201,8 @@
         android:id="@+id/guess_edit_text"
         style="@style/Widget.AppCompat.EditText"
         android:layout_width="0dp"
-        android:layout_height="43dp"
-        android:layout_marginTop="18dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="1dp"
         android:layout_marginBottom="105dp"
         android:ems="10"
@@ -214,7 +216,7 @@
         app:layout_constraintHorizontal_chainStyle="spread_inside"
         app:layout_constraintStart_toEndOf="@+id/reset_btn"
         app:layout_constraintTop_toBottomOf="@+id/bottom_divider"
-        app:layout_constraintVertical_bias="1.0"
+        app:layout_constraintVertical_bias="0.065"
         tools:targetApi="o"/>
 
     <Button
@@ -222,7 +224,7 @@
         style="@style/Widget.AppCompat.Button.Small"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="18dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="100dp"
         android:elevation="4dp"
@@ -231,21 +233,23 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/guess_edit_text"
-        app:layout_constraintTop_toBottomOf="@+id/bottom_divider"/>
+        app:layout_constraintTop_toBottomOf="@+id/bottom_divider"
+        app:layout_constraintVertical_bias="0.049"/>
 
     <Button
         android:id="@+id/reset_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="18dp"
+        android:layout_marginTop="16dp"
         android:layout_marginBottom="100dp"
         android:text="@string/reset_btn"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guess_edit_text"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bottom_divider"/>
+        app:layout_constraintTop_toBottomOf="@+id/bottom_divider"
+        app:layout_constraintVertical_bias="0.047"/>
 
     <TextView
         android:id="@+id/guessed_letters_headline"
