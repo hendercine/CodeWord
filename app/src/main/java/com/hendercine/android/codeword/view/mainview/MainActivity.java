@@ -9,6 +9,7 @@
 package com.hendercine.android.codeword.view.mainview;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
@@ -147,7 +148,7 @@ public class MainActivity extends AppCompatActivity {
             );
             mUserInput.clear();
             mGuessInput.clearFocus();
-            hideKeyboard(MainActivity.this);
+            hideKeyboard(MainActivity.this, mGuessInput);
         }
     }
 
@@ -274,29 +275,34 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public static void hideKeyboard(Activity activity) {
-        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
-        //Find the currently focused view, so we can grab the correct window token from it.
-        View view = activity.getCurrentFocus();
-        //If no view currently has focus, create a new one, just so we can grab a window token from it
-        if (view == null) {
-            view = new View(activity);
-        }
-        if (imm != null) {
-            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-        }
+    public static void hideKeyboard(Context context, View view) {
+        InputMethodManager imm = (InputMethodManager) context.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
-    public void hideKeyboardOnKeyTouch(EditText editText) {
-        final int generatedKeyCode = KeyEvent.keyCodeFromString
-                (editText.getText().toString());
-        editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+//    public static void hideKeyboard(Activity activity) {
+//        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+//        //Find the currently focused view, so we can grab the correct window token from it.
+//        View view = activity.getCurrentFocus();
+//        //If no view currently has focus, create a new one, just so we can grab a window token from it
+//        if (view == null) {
+//            view = new View(activity);
+//        }
+//        if (imm != null) {
+//            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+//        }
+//    }
+
+    public void hideKeyboardOnKeyTouch(final EditText editText) {
+//        final int generatedKeyCode = KeyEvent.keyCodeFromString
+//                (editText.getText().toString());
+        editText.setOnKeyListener(new View.OnKeyListener() {
             @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (event.getAction() == generatedKeyCode) {
-                    hideKeyboard(MainActivity.this);
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_ENTER && editText.getText().toString().length() == 1) {
+                    hideKeyboard(MainActivity.this, mGuessInput);
                 }
-                return false;
+                return true;
             }
         });
     }
