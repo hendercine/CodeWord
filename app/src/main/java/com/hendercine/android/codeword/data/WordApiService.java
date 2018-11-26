@@ -8,9 +8,8 @@
 
 package com.hendercine.android.codeword.data;
 
-import java.util.ArrayList;
-
 import retrofit2.http.GET;
+import retrofit2.http.Query;
 import rx.Observable;
 /**
  * codeword created by James Henderson on 11/24/18.
@@ -18,5 +17,7 @@ import rx.Observable;
 public interface WordApiService {
 
     @GET("words")
-    Observable<ArrayList<String>> getWordsList();
+    Observable<String> getWordsText(@Query("difficulty") int difficulty,
+                                    @Query("minLength") int minLength,
+                                    @Query("maxLength") int maxLength);
 }

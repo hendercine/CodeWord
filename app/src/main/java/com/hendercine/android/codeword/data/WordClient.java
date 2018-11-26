@@ -8,8 +8,6 @@
 
 package com.hendercine.android.codeword.data;
 
-import java.util.ArrayList;
-
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
@@ -40,7 +38,8 @@ public class WordClient {
         return instance;
     }
 
-    public Observable<ArrayList<String>> getWordsFromApi() {
-        return mWordApiService.getWordsList();
+    public Observable<String> getWordsFromApi(int difficulty, int minLength,
+                                              int maxLength) {
+        return mWordApiService.getWordsText(difficulty, minLength, maxLength);
     }
 }

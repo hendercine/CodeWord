@@ -20,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.hendercine.android.codeword.R;
+import com.hendercine.android.codeword.data.WordClient;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -30,6 +31,11 @@ import java.util.Random;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import rx.Observer;
+import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
+import timber.log.Timber;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -62,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
     private StringBuilder mGuessedLettersBuilder;
     private ArrayList<String> mCodeWordsList;
     private Editable mUserInput;
+    private Subscription mSubscription;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,20 +83,48 @@ public class MainActivity extends AppCompatActivity {
             mCount = savedInstanceState.getInt(TRIES_COUNT);
         }
         mCountdown.setText(String.valueOf(mCount));
-        mCodeWordsList = new ArrayList<>();
-        mCodeWordsList.addAll(Arrays.asList("linked", "inmail", "street"));
-        mCodeWord = mCodeWordsList.get(new Random().nextInt(mCodeWordsList.size()));
+        getCodeWordsListFromApi();
+//        mCodeWordsList = new ArrayList<>();
+//        mCodeWordsList.addAll(Arrays.asList("linked", "inmail", "street"));
+//        mCodeWord = mCodeWordsList.get(new Random().nextInt(mCodeWordsList.size()));
         mGuessInput.setActivated(true);
-        mEnteredLetters = new char[mCodeWord.length()];
         mGuessedLettersBuilder = new StringBuilder();
         mGuessedLetters.setText("");
-        hideKeyboardOnKeyTouch(mGuessInput);
+//        hideKeyboardOnKeyTouch(mGuessInput);
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         outState.putInt(TRIES_COUNT, mCount);
         super.onSaveInstanceState(outState);
+    }
+
+    private void getCodeWordsListFromApi() {
+        mSubscription = WordClient.getInstance()
+                .getWordsFromApi(1, 6, 7)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<String>() {
+                    @Override
+                    public void onCompleted() {
+                        Timber.d("In onCompleted");
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Timber.d("In onError");
+                    }
+
+                    @Override
+                    public void onNext(String wordsText) {
+                        Timber.d("In onNext");
+                        mCodeWordsList = new ArrayList<>(Arrays
+                                .asList(wordsText.split("\\s+")));
+                        mCodeWord = mCodeWordsList.get(new Random().nextInt(mCodeWordsList.size()));
+                        mEnteredLetters = new char[mCodeWord.length()];
+                    }
+                });
+
     }
 
     @OnClick(R.id.guess_button)
@@ -134,7 +169,7 @@ public class MainActivity extends AppCompatActivity {
             )
                     .show();
 
-            resetGame();
+//            resetGame();
         }
         // Check for game end conditions
         if (!correctGuess && mCount > 1) {
@@ -152,7 +187,7 @@ public class MainActivity extends AppCompatActivity {
                     .show();
             revealCorrectPositions(6);
 
-            resetGame();
+//            resetGame();
         }
     }
 
