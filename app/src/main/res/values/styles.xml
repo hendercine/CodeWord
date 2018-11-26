@@ -18,16 +18,23 @@
 
     <style name="AppTheme.Letters">
         <item name="android:padding">4dp</item>
-        <item name="android:layout_margin">0dp</item>
-        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Display4</item>
+        <item name="android:layout_marginStart">4dp</item>
+        <item name="android:layout_marginEnd">4dp</item>
+        <item name="app:autoSizeTextType">uniform</item>
+        <item name="app:autoSizeMinTextSize">64sp</item>
+        <item name="app:autoSizeMaxTextSize">72sp</item>
+        <item name="app:autoSizeStepGranularity">2sp</item>
         <item name="android:textStyle">normal</item>
         <item name="android:textColor">#FFF</item>
         <item name="android:gravity">center</item>
+        <item name="android:layout_gravity">bottom</item>
         <item name="android:visibility">invisible</item>
     </style>
 
-    <style name="AppTheme.Letters.underscores">
+    <style name="AppTheme.underscores">
         <item name="android:visibility">visible</item>
+        <item name="android:layout_marginStart">4dp</item>
+        <item name="android:layout_marginEnd">4dp</item>
     </style>
 
 </resources>
