@@ -21,6 +21,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.hendercine.android.codeword.R;
 import com.hendercine.android.codeword.data.WordClient;
 
@@ -81,19 +82,20 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         if (savedInstanceState == null) {
-            mCount = 5;
+            mCount = 6;
             mCorrectCount = 0;
         } else {
             mCount = savedInstanceState.getInt(TRIES_COUNT);
         }
-//        mCountdown.setText(String.valueOf(mCount));
-        setBombImage(4);
-//        getCodeWordsListFromApi();
+
+        setBombImage(mCount);
+        getCodeWordsListFromApi();
 
         // Maintain below commented code for debugging
-        mCodeWordsList = new ArrayList<>();
-        mCodeWordsList.addAll(Arrays.asList("linked", "inmail", "street"));
-        mCodeWord = mCodeWordsList.get(new Random().nextInt(mCodeWordsList.size()));
+//        mCodeWordsList = new ArrayList<>();
+//        mCodeWordsList.addAll(Arrays.asList("linked", "inmail", "street"));
+//        mCodeWord = mCodeWordsList.get(new Random().nextInt(mCodeWordsList.size()));
+
         mGuessInput.setActivated(true);
         mGuessedLettersBuilder = new StringBuilder();
         mGuessedLetters.setText("");
@@ -262,49 +264,35 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setBombImage(int count) {
-
         switch (count) {
             case 0:
-                mCountdown.setImageDrawable(null);
-                mCountdown.setImageResource(R.drawable.explosion_giphy);
+                glideHelper(R.drawable.explosion_giphy);
+                break;
             case 1:
-//                glideHelper(R.drawable.t_minus_1);
-                mCountdown.setImageDrawable(null);
-                mCountdown.setImageResource(R.drawable.t_minus_1);
+                glideHelper(R.drawable.last_guess);
+                break;
             case 2:
-//                glideHelper(R.drawable.t_minus_2);
-                mCountdown.setImageDrawable(null);
-                mCountdown.setImageResource(R.drawable.t_minus_2);
+                glideHelper(R.drawable.two_more_guesses);
+                break;
             case 3:
-//                glideHelper(R.drawable.t_minus_3);
-                mCountdown.setImageDrawable(null);
-                mCountdown.setImageResource(R.drawable.t_minus_3);
+                glideHelper(R.drawable.three_left);
+                break;
             case 4:
-//                glideHelper(R.drawable.t_minus_4);
-                mCountdown.setImageDrawable(null);
-                mCountdown.setImageResource(R.drawable.t_minus_4);
+                glideHelper(R.drawable.fourth_bomb);
+                break;
             case 5:
-//                glideHelper(R.drawable.t_minus_5);
-                mCountdown.setImageDrawable(null);
-                mCountdown.setImageResource(R.drawable.t_minus_5);
+                glideHelper(R.drawable.t_minus_five);
+                break;
             case 6:
-//                glideHelper(R.drawable.t_minus_6);
-                mCountdown.setImageDrawable(null);
-                mCountdown.setImageResource(R.drawable.t_minus_6);
+                glideHelper(R.drawable.first_guess);
+                break;
         }
     }
 
     private void glideHelper(int imgRes) {
-        mCountdown.setImageDrawable(null);
-//        RequestOptions options = new RequestOptions()
-//                .centerInside()
-//                .placeholder(R.mipmap.ic_launcher_round)
-//                .error(R.mipmap.ic_launcher_round);
-
-//        Glide.with(MainActivity.this)
-//                .load(imgRes)
-////                .apply(options)
-//                .into(mCountdown);
+        Glide.with(MainActivity.this)
+                .load(imgRes)
+                .into(mCountdown);
     }
 
     private void setTextInPosition(@NotNull TextView textView, int caseCount) {
