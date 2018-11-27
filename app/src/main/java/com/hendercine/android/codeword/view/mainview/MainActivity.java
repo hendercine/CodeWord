@@ -8,7 +8,6 @@
 
 package com.hendercine.android.codeword.view.mainview;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -73,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
     private StringBuilder mGuessedLettersBuilder;
     private ArrayList<String> mCodeWordsList;
     private Editable mUserInput;
+    @SuppressWarnings("unused")
     private Subscription mSubscription;
 
     @Override
@@ -178,18 +178,15 @@ public class MainActivity extends AppCompatActivity {
             )
                     .show();
 
-//            resetGame();
         }
         // Check for game end conditions
         if (!correctGuess && mCount > 1) {
-//            mCountdown.setText(String.valueOf(mCount - 1));
             setBombImage(mCount - 1);
             mEnteredLetters = String.valueOf(guessLetter).toCharArray();
             addGuessedLettersToView();
             mCount--;
         } else if (!correctGuess && mCount == 1) {
             // Set game lost conditions
-//            mCountdown.setText(String.valueOf(mCount - 1));
             setBombImage(mCount - 1);
             Toast.makeText(
                     this,
@@ -198,8 +195,6 @@ public class MainActivity extends AppCompatActivity {
             ).show();
             revealCorrectPositions(6);
             mCount = 6;
-
-//            resetGame();
         }
     }
 
@@ -304,7 +299,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public static void hideKeyboard(@NotNull Context context, View view) {
-        InputMethodManager imm = (InputMethodManager) context.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        InputMethodManager imm = (InputMethodManager) context
+                .getSystemService(AppCompatActivity.INPUT_METHOD_SERVICE);
         if (imm != null) {
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
