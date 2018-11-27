@@ -23,6 +23,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.hendercine.android.codeword.R;
 import com.hendercine.android.codeword.data.WordClient;
+import com.hendercine.android.codeword.view.base.BaseActivity;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -41,7 +42,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
     private static final String TRIES_COUNT = "triesCount";
     private static final String CODE_WORD = "codeWord";
@@ -103,6 +104,10 @@ public class MainActivity extends AppCompatActivity {
             mEnteredLetters = savedInstanceState.getCharArray(ENTERED_LETTERS);
         }
 
+        if (savedInstanceState != null) {
+            boolean visibilityOne = savedInstanceState.getBoolean(LETTER_1);
+        }
+
         setBombImage(mCount);
 
         // Maintain below commented code for debugging
@@ -117,12 +122,23 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    protected int getActivityLayout() {
+        return 0;
+    }
+
+    @Override
     protected void onSaveInstanceState(Bundle outState) {
         outState.putInt(TRIES_COUNT, mCount);
         outState.putString(CODE_WORD, mCodeWord);
         outState.putString(GUESS_STRING, mGuessStr);
         outState.putInt(CORRECT_COUNT, mCorrectCount);
         outState.putCharArray(ENTERED_LETTERS,mEnteredLetters);
+        outState.putBoolean(LETTER_1, hasVisibleLetter(mLetterOne));
+        outState.putBoolean(LETTER_2, hasVisibleLetter(mLetterTwo));
+        outState.putBoolean(LETTER_3, hasVisibleLetter(mLetterThree));
+        outState.putBoolean(LETTER_4, hasVisibleLetter(mLetterFour));
+        outState.putBoolean(LETTER_5, hasVisibleLetter(mLetterFive));
+        outState.putBoolean(LETTER_6, hasVisibleLetter(mLetterSix));
         super.onSaveInstanceState(outState);
     }
 
@@ -178,6 +194,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void checkGuess(char guessLetter, @NotNull String codeWord) {
+
         boolean correctGuess = false;
         for (int i = 0; i < codeWord.length(); i++) {
             if (codeWord.charAt(i) == guessLetter) {
@@ -237,6 +254,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void revealCorrectPositions(int correctGuessPosition) {
+
         switch (correctGuessPosition) {
             case 0:
                 setTextInPosition(mLetterOne, correctGuessPosition);
@@ -311,6 +329,10 @@ public class MainActivity extends AppCompatActivity {
                     .toUpperCase());
             textView.setVisibility(View.VISIBLE);
         }
+    }
+
+    private boolean hasVisibleLetter(TextView letterView) {
+        return letterView.getVisibility() == View.VISIBLE;
     }
 
     public static void hideKeyboard(@NotNull Context context, View view) {
