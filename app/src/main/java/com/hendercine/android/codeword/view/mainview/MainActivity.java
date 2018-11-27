@@ -99,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
         mGuessInput.setActivated(true);
         mGuessedLettersBuilder = new StringBuilder();
         mGuessedLetters.setText("");
-//        hideKeyboardOnKeyTouch(mGuessInput);
+        hideKeyboardOnKeyTouch(mGuessInput);
     }
 
     @Override
@@ -307,12 +307,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void hideKeyboardOnKeyTouch(final EditText editText) {
-//        final int generatedKeyCode = KeyEvent.keyCodeFromString
-//                (editText.getText().toString());
+
         editText.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if (keyCode == KeyEvent.KEYCODE_ENTER && editText.getText().toString().length() == 1) {
+                if (editText.getText().toString().length() == 1) {
                     hideKeyboard(MainActivity.this, mGuessInput);
                 }
                 return true;
