@@ -18,6 +18,8 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
+import java.util.Objects;
+
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import timber.log.Timber;
@@ -56,7 +58,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     public void showSnackBar(int resId) {
         Snackbar.make(
-                findViewById(android.R.id.content),
+                findViewById(Objects.requireNonNull(getCurrentFocus()).getId()),
                 resId,
                 Snackbar.LENGTH_SHORT
         ).show();

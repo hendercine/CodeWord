@@ -18,7 +18,6 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.hendercine.android.codeword.R;
@@ -34,7 +33,6 @@ import java.util.Map;
 import java.util.Random;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.Observer;
 import rx.Subscription;
@@ -89,8 +87,6 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        ButterKnife.bind(this);
 
         if (savedInstanceState == null) {
             mCount = 6;
@@ -123,7 +119,7 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected int getActivityLayout() {
-        return 0;
+        return R.layout.activity_main;
     }
 
     @Override
@@ -204,13 +200,7 @@ public class MainActivity extends BaseActivity {
         }
         // Check for victory conditions
         if (mCorrectCount == mCodeWord.length()) {
-            Toast.makeText(
-                    this,
-                    "YOU HAVE DISCOVERED THE CODE WORD!!\nYOU WIN!!",
-                    Toast.LENGTH_LONG
-            )
-                    .show();
-
+            showToast(R.string.you_win);
         }
         // Check for game end conditions
         if (!correctGuess && mCount > 1) {
@@ -221,11 +211,7 @@ public class MainActivity extends BaseActivity {
         } else if (!correctGuess && mCount == 1) {
             // Set game lost conditions
             setBombImage(mCount - 1);
-            Toast.makeText(
-                    this,
-                    "NO MORE GUESSES\nGAME OVER",
-                    Toast.LENGTH_LONG
-            ).show();
+            showToast(R.string.you_lose);
             revealCorrectPositions(6);
             mCount = 6;
         }
@@ -360,6 +346,7 @@ public class MainActivity extends BaseActivity {
         mUserInput.clear();
         mGuessInput.clearFocus();
         mCount = 6;
+        mCorrectCount = 0;
         getCodeWordsListFromApi();
         MainActivity.this.recreate();
     }
