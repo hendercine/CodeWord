@@ -44,6 +44,16 @@ import timber.log.Timber;
 public class MainActivity extends AppCompatActivity {
 
     private static final String TRIES_COUNT = "triesCount";
+    private static final String CODE_WORD = "codeWord";
+    private static final String GUESS_STRING = "guessString";
+    private static final String CORRECT_COUNT = "correctCount";
+    private static final String ENTERED_LETTERS = "enteredLetters";
+    private static final String LETTER_1 = "letter_1";
+    private static final String LETTER_2 = "letter_2";
+    private static final String LETTER_3 = "letter_3";
+    private static final String LETTER_4 = "letter_4";
+    private static final String LETTER_5 = "letter_5";
+    private static final String LETTER_6 = "letter_6";
 
     @BindView(R.id.guess_edit_text)
     EditText mGuessInput;
@@ -71,9 +81,9 @@ public class MainActivity extends AppCompatActivity {
     private char[] mEnteredLetters;
     private StringBuilder mGuessedLettersBuilder;
     private ArrayList<String> mCodeWordsList;
-    private Editable mUserInput;
     @SuppressWarnings("unused")
     private Subscription mSubscription;
+    private Editable mUserInput;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,12 +94,16 @@ public class MainActivity extends AppCompatActivity {
         if (savedInstanceState == null) {
             mCount = 6;
             mCorrectCount = 0;
+            getCodeWordsListFromApi();
         } else {
             mCount = savedInstanceState.getInt(TRIES_COUNT);
+            mCorrectCount = savedInstanceState.getInt(CORRECT_COUNT);
+            mGuessStr = savedInstanceState.getString(GUESS_STRING);
+            mCodeWord = savedInstanceState.getString(CODE_WORD);
+            mEnteredLetters = savedInstanceState.getCharArray(ENTERED_LETTERS);
         }
 
         setBombImage(mCount);
-        getCodeWordsListFromApi();
 
         // Maintain below commented code for debugging
 //        mCodeWordsList = new ArrayList<>();
@@ -105,6 +119,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         outState.putInt(TRIES_COUNT, mCount);
+        outState.putString(CODE_WORD, mCodeWord);
+        outState.putString(GUESS_STRING, mGuessStr);
+        outState.putInt(CORRECT_COUNT, mCorrectCount);
+        outState.putCharArray(ENTERED_LETTERS,mEnteredLetters);
         super.onSaveInstanceState(outState);
     }
 
@@ -133,7 +151,6 @@ public class MainActivity extends AppCompatActivity {
                         mEnteredLetters = new char[mCodeWord.length()];
                     }
                 });
-
     }
 
     @OnClick(R.id.guess_button)
@@ -161,7 +178,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void checkGuess(char guessLetter, @NotNull String codeWord) {
-
         boolean correctGuess = false;
         for (int i = 0; i < codeWord.length(); i++) {
             if (codeWord.charAt(i) == guessLetter) {
@@ -221,7 +237,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void revealCorrectPositions(int correctGuessPosition) {
-
         switch (correctGuessPosition) {
             case 0:
                 setTextInPosition(mLetterOne, correctGuessPosition);
@@ -320,7 +335,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void resetGame() {
+        mUserInput.clear();
+        mGuessInput.clearFocus();
         mCount = 6;
+        getCodeWordsListFromApi();
         MainActivity.this.recreate();
     }
 }
