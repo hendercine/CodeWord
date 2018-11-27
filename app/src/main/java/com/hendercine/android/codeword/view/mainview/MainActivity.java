@@ -48,12 +48,6 @@ public class MainActivity extends AppCompatActivity {
     private static final String GUESS_STRING = "guessString";
     private static final String CORRECT_COUNT = "correctCount";
     private static final String ENTERED_LETTERS = "enteredLetters";
-    private static final String LETTER_1 = "letter_1";
-    private static final String LETTER_2 = "letter_2";
-    private static final String LETTER_3 = "letter_3";
-    private static final String LETTER_4 = "letter_4";
-    private static final String LETTER_5 = "letter_5";
-    private static final String LETTER_6 = "letter_6";
 
     @BindView(R.id.guess_edit_text)
     EditText mGuessInput;
@@ -91,20 +85,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        if (savedInstanceState == null) {
-            mCount = 6;
-            mCorrectCount = 0;
-            getCodeWordsListFromApi();
-        } else {
-            mCount = savedInstanceState.getInt(TRIES_COUNT);
-            mCorrectCount = savedInstanceState.getInt(CORRECT_COUNT);
-            mGuessStr = savedInstanceState.getString(GUESS_STRING);
-            mCodeWord = savedInstanceState.getString(CODE_WORD);
-            mEnteredLetters = savedInstanceState.getCharArray(ENTERED_LETTERS);
-        }
-
+        mCount = 6;
+        mCorrectCount = 0;
         setBombImage(mCount);
-
+        getCodeWordsListFromApi();
         // Maintain below commented code for debugging
 //        mCodeWordsList = new ArrayList<>();
 //        mCodeWordsList.addAll(Arrays.asList("linked", "inmail", "street"));
@@ -118,12 +102,21 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
+        // TODO: refactor to allow landscape mode and saved instances
         outState.putInt(TRIES_COUNT, mCount);
-        outState.putString(CODE_WORD, mCodeWord);
-        outState.putString(GUESS_STRING, mGuessStr);
         outState.putInt(CORRECT_COUNT, mCorrectCount);
-        outState.putCharArray(ENTERED_LETTERS,mEnteredLetters);
+        outState.putString(GUESS_STRING, mGuessStr);
+        outState.putString(CODE_WORD, mCodeWord);
+        outState.putCharArray(ENTERED_LETTERS, mEnteredLetters);
         super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mSubscription != null && !mSubscription.isUnsubscribed()) {
+            mSubscription.unsubscribe();
+        }
     }
 
     private void getCodeWordsListFromApi() {
@@ -147,7 +140,8 @@ public class MainActivity extends AppCompatActivity {
                         Timber.d("In onNext");
                         mCodeWordsList = new ArrayList<>(Arrays
                                 .asList(wordsText.split("\\s+")));
-                        mCodeWord = mCodeWordsList.get(new Random().nextInt(mCodeWordsList.size()));
+                        mCodeWord = mCodeWordsList.get(new Random().nextInt(mCodeWordsList
+                                .size()));
                         mEnteredLetters = new char[mCodeWord.length()];
                     }
                 });
@@ -189,7 +183,7 @@ public class MainActivity extends AppCompatActivity {
         if (mCorrectCount == mCodeWord.length()) {
             Toast.makeText(
                     this,
-                    "YOU HAVE DISCOVERED THE CODE WORD!!\nYOU WIN!!",
+                    R.string.you_win,
                     Toast.LENGTH_LONG
             )
                     .show();
@@ -206,7 +200,7 @@ public class MainActivity extends AppCompatActivity {
             setBombImage(mCount - 1);
             Toast.makeText(
                     this,
-                    "NO MORE GUESSES\nGAME OVER",
+                    R.string.you_lose,
                     Toast.LENGTH_LONG
             ).show();
             revealCorrectPositions(6);
@@ -335,10 +329,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void resetGame() {
-        mUserInput.clear();
+        if (mUserInput != null) {
+            mUserInput.clear();
+        }
         mGuessInput.clearFocus();
-        mCount = 6;
-        getCodeWordsListFromApi();
         MainActivity.this.recreate();
     }
 }

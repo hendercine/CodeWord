@@ -15,4 +15,6 @@
     <string name="submit">Submit</string>
     <string name="incorrect_letters">Incorrect Guesses</string>
     <string name="reset_btn">Reset Game</string>
+    <string name="you_win">YOU HAVE DISCOVERED THE CODE WORD!! YOU WIN!!</string>
+    <string name="you_lose">NO MORE GUESSES GAME OVER</string>
 </resources>
