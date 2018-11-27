@@ -21,8 +21,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.hendercine.android.codeword.R;
 import com.hendercine.android.codeword.data.WordClient;
 
@@ -83,13 +81,13 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         if (savedInstanceState == null) {
-            mCount = 6;
+            mCount = 5;
             mCorrectCount = 0;
         } else {
             mCount = savedInstanceState.getInt(TRIES_COUNT);
         }
 //        mCountdown.setText(String.valueOf(mCount));
-        setBombImage(mCount);
+        setBombImage(4);
 //        getCodeWordsListFromApi();
 
         // Maintain below commented code for debugging
@@ -190,14 +188,14 @@ public class MainActivity extends AppCompatActivity {
         } else if (!correctGuess && mCount == 1) {
             // Set game lost conditions
 //            mCountdown.setText(String.valueOf(mCount - 1));
-            setBombImage(0);
+            setBombImage(mCount - 1);
             Toast.makeText(
                     this,
                     "NO MORE GUESSES\nGAME OVER",
                     Toast.LENGTH_LONG
-            )
-                    .show();
+            ).show();
             revealCorrectPositions(6);
+            mCount = 6;
 
 //            resetGame();
         }
@@ -253,53 +251,68 @@ public class MainActivity extends AppCompatActivity {
                 mCorrectCount++;
                 break;
             case 6:
-                setTextInPosition(mLetterOne, correctGuessPosition);
-                setTextInPosition(mLetterTwo, correctGuessPosition);
-                setTextInPosition(mLetterThree, correctGuessPosition);
-                setTextInPosition(mLetterFour, correctGuessPosition);
-                setTextInPosition(mLetterFive, correctGuessPosition);
-                setTextInPosition(mLetterSix, correctGuessPosition);
+                setTextInPosition(mLetterOne, 0);
+                setTextInPosition(mLetterTwo, 1);
+                setTextInPosition(mLetterThree, 2);
+                setTextInPosition(mLetterFour, 3);
+                setTextInPosition(mLetterFive, 4);
+                setTextInPosition(mLetterSix, 5);
                 break;
         }
     }
 
     private void setBombImage(int count) {
-        RequestOptions options = new RequestOptions()
-                .centerCrop()
-                .placeholder(R.mipmap.ic_launcher_round)
-                .error(R.mipmap.ic_launcher_round);
 
         switch (count) {
             case 0:
-                Glide.with(this)
-                        .load("https://media.giphy.com/media/Qw4X3FkHjXDWr9p3bIk/giphy.gif")
-                        .apply(options)
-                        .into(mCountdown);
+                mCountdown.setImageDrawable(null);
+                mCountdown.setImageResource(R.drawable.explosion_giphy);
             case 1:
-                glideHelper(R.drawable.t_minus_1);
+//                glideHelper(R.drawable.t_minus_1);
+                mCountdown.setImageDrawable(null);
+                mCountdown.setImageResource(R.drawable.t_minus_1);
             case 2:
-                glideHelper(R.drawable.t_minus_2);
+//                glideHelper(R.drawable.t_minus_2);
+                mCountdown.setImageDrawable(null);
+                mCountdown.setImageResource(R.drawable.t_minus_2);
             case 3:
-                glideHelper(R.drawable.t_minus_3);
+//                glideHelper(R.drawable.t_minus_3);
+                mCountdown.setImageDrawable(null);
+                mCountdown.setImageResource(R.drawable.t_minus_3);
             case 4:
-                glideHelper(R.drawable.t_minus_4);
+//                glideHelper(R.drawable.t_minus_4);
+                mCountdown.setImageDrawable(null);
+                mCountdown.setImageResource(R.drawable.t_minus_4);
             case 5:
-                glideHelper(R.drawable.t_minus_5);
+//                glideHelper(R.drawable.t_minus_5);
+                mCountdown.setImageDrawable(null);
+                mCountdown.setImageResource(R.drawable.t_minus_5);
             case 6:
-                glideHelper(R.drawable.t_minus_6);
+//                glideHelper(R.drawable.t_minus_6);
+                mCountdown.setImageDrawable(null);
+                mCountdown.setImageResource(R.drawable.t_minus_6);
         }
     }
 
     private void glideHelper(int imgRes) {
-        Glide.with(this)
-                .load(imgRes)
-                .into(mCountdown);
+        mCountdown.setImageDrawable(null);
+//        RequestOptions options = new RequestOptions()
+//                .centerInside()
+//                .placeholder(R.mipmap.ic_launcher_round)
+//                .error(R.mipmap.ic_launcher_round);
+
+//        Glide.with(MainActivity.this)
+//                .load(imgRes)
+////                .apply(options)
+//                .into(mCountdown);
     }
 
     private void setTextInPosition(@NotNull TextView textView, int caseCount) {
-        textView.setText(String.valueOf(mCodeWord.charAt(caseCount))
-                .toUpperCase());
-        textView.setVisibility(View.VISIBLE);
+        if (caseCount >= 0 && caseCount < 7) {
+            textView.setText(String.valueOf(mCodeWord.charAt(caseCount))
+                    .toUpperCase());
+            textView.setVisibility(View.VISIBLE);
+        }
     }
 
     public static void hideKeyboard(@NotNull Context context, View view) {
