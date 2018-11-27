@@ -17,28 +17,24 @@
     android:fitsSystemWindows="true"
     tools:context=".view.mainview.MainActivity">
 
-    <TextView
+    <android.support.v7.widget.AppCompatImageView
         android:id="@+id/countdown_view"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
+        android:background="@android:color/white"
         android:clickable="false"
         android:gravity="center"
         android:isScrollContainer="false"
         android:linksClickable="false"
         android:longClickable="false"
-        android:textAlignment="center"
-        android:textAppearance="@style/TextAppearance.AppCompat.Display4"
-        android:textColor="@color/colorPrimary"
-        android:textSize="120sp"
         app:layout_constraintBottom_toTopOf="@+id/top_divider"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="@string/countdown_start"/>
+        app:layout_constraintVertical_bias="1.0"
+        tools:src="@drawable/t_minus_6"
+        tools:srcCompat="@drawable/t_minus_6"/>
 
     <View
         android:id="@+id/top_divider"

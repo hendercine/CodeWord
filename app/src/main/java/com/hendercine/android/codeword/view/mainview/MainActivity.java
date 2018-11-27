@@ -12,6 +12,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatImageView;
 import android.text.Editable;
 import android.view.KeyEvent;
 import android.view.View;
@@ -20,8 +21,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.hendercine.android.codeword.R;
 import com.hendercine.android.codeword.data.WordClient;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -57,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.letter_6)
     TextView mLetterSix;
     @BindView(R.id.countdown_view)
-    TextView mCountdown;
+    AppCompatImageView mCountdown;
     @BindView(R.id.guessed_letters_view)
     TextView mGuessedLetters;
 
@@ -83,11 +88,14 @@ public class MainActivity extends AppCompatActivity {
         } else {
             mCount = savedInstanceState.getInt(TRIES_COUNT);
         }
-        mCountdown.setText(String.valueOf(mCount));
-        getCodeWordsListFromApi();
-//        mCodeWordsList = new ArrayList<>();
-//        mCodeWordsList.addAll(Arrays.asList("linked", "inmail", "street"));
-//        mCodeWord = mCodeWordsList.get(new Random().nextInt(mCodeWordsList.size()));
+//        mCountdown.setText(String.valueOf(mCount));
+        setBombImage(mCount);
+//        getCodeWordsListFromApi();
+
+        // Maintain below commented code for debugging
+        mCodeWordsList = new ArrayList<>();
+        mCodeWordsList.addAll(Arrays.asList("linked", "inmail", "street"));
+        mCodeWord = mCodeWordsList.get(new Random().nextInt(mCodeWordsList.size()));
         mGuessInput.setActivated(true);
         mGuessedLettersBuilder = new StringBuilder();
         mGuessedLetters.setText("");
@@ -152,7 +160,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void checkGuess(char guessLetter, String codeWord) {
+    private void checkGuess(char guessLetter, @NotNull String codeWord) {
 
         boolean correctGuess = false;
         for (int i = 0; i < codeWord.length(); i++) {
@@ -174,12 +182,15 @@ public class MainActivity extends AppCompatActivity {
         }
         // Check for game end conditions
         if (!correctGuess && mCount > 1) {
-            mCountdown.setText(String.valueOf(mCount - 1));
+//            mCountdown.setText(String.valueOf(mCount - 1));
+            setBombImage(mCount - 1);
             mEnteredLetters = String.valueOf(guessLetter).toCharArray();
             addGuessedLettersToView();
             mCount--;
         } else if (!correctGuess && mCount == 1) {
-            mCountdown.setText(String.valueOf(mCount - 1));
+            // Set game lost conditions
+//            mCountdown.setText(String.valueOf(mCount - 1));
+            setBombImage(0);
             Toast.makeText(
                     this,
                     "NO MORE GUESSES\nGAME OVER",
@@ -214,87 +225,89 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void revealCorrectPositions(int correctGuessPositions) {
+    private void revealCorrectPositions(int correctGuessPosition) {
 
-        switch (correctGuessPositions) {
+        switch (correctGuessPosition) {
             case 0:
-                mLetterOne.setText(String.valueOf(mCodeWord.charAt(0))
-                        .toUpperCase());
-                mLetterOne.setVisibility(View.VISIBLE);
+                setTextInPosition(mLetterOne, correctGuessPosition);
                 mCorrectCount++;
                 break;
             case 1:
-                mLetterTwo.setText(String.valueOf(mCodeWord.charAt(1))
-                        .toUpperCase());
-                mLetterTwo.setVisibility(View.VISIBLE);
+                setTextInPosition(mLetterTwo, correctGuessPosition);
                 mCorrectCount++;
                 break;
             case 2:
-                mLetterThree.setText(String.valueOf(mCodeWord.charAt(2))
-                        .toUpperCase());
-                mLetterThree.setVisibility(View.VISIBLE);
+                setTextInPosition(mLetterThree, correctGuessPosition);
                 mCorrectCount++;
                 break;
             case 3:
-                mLetterFour.setText(String.valueOf(mCodeWord.charAt(3))
-                        .toUpperCase());
-                mLetterFour.setVisibility(View.VISIBLE);
+                setTextInPosition(mLetterFour, correctGuessPosition);
                 mCorrectCount++;
                 break;
             case 4:
-                mLetterFive.setText(String.valueOf(mCodeWord.charAt(4))
-                        .toUpperCase());
-                mLetterFive.setVisibility(View.VISIBLE);
+                setTextInPosition(mLetterFive, correctGuessPosition);
                 mCorrectCount++;
                 break;
             case 5:
-                mLetterSix.setText(String.valueOf(mCodeWord.charAt(5))
-                        .toUpperCase());
-                mLetterSix.setVisibility(View.VISIBLE);
+                setTextInPosition(mLetterSix, correctGuessPosition);
                 mCorrectCount++;
                 break;
             case 6:
-                mLetterOne.setText(String.valueOf(mCodeWord.charAt(0))
-                        .toUpperCase());
-                mLetterOne.setVisibility(View.VISIBLE);
-                mLetterTwo.setText(String.valueOf(mCodeWord.charAt(1))
-                        .toUpperCase());
-                mLetterTwo.setVisibility(View.VISIBLE);
-                mLetterThree.setText(String.valueOf(mCodeWord.charAt(2))
-                        .toUpperCase());
-                mLetterThree.setVisibility(View.VISIBLE);
-                mLetterFour.setText(String.valueOf(mCodeWord.charAt(3))
-                        .toUpperCase());
-                mLetterFour.setVisibility(View.VISIBLE);
-                mLetterFive.setText(String.valueOf(mCodeWord.charAt(4))
-                        .toUpperCase());
-                mLetterFive.setVisibility(View.VISIBLE);
-                mLetterSix.setText(String.valueOf(mCodeWord.charAt(5))
-                        .toUpperCase());
-                mLetterSix.setVisibility(View.VISIBLE);
+                setTextInPosition(mLetterOne, correctGuessPosition);
+                setTextInPosition(mLetterTwo, correctGuessPosition);
+                setTextInPosition(mLetterThree, correctGuessPosition);
+                setTextInPosition(mLetterFour, correctGuessPosition);
+                setTextInPosition(mLetterFive, correctGuessPosition);
+                setTextInPosition(mLetterSix, correctGuessPosition);
                 break;
         }
     }
 
-    public static void hideKeyboard(Context context, View view) {
+    private void setBombImage(int count) {
+        RequestOptions options = new RequestOptions()
+                .centerCrop()
+                .placeholder(R.mipmap.ic_launcher_round)
+                .error(R.mipmap.ic_launcher_round);
+
+        switch (count) {
+            case 0:
+                Glide.with(this)
+                        .load("https://media.giphy.com/media/Qw4X3FkHjXDWr9p3bIk/giphy.gif")
+                        .apply(options)
+                        .into(mCountdown);
+            case 1:
+                glideHelper(R.drawable.t_minus_1);
+            case 2:
+                glideHelper(R.drawable.t_minus_2);
+            case 3:
+                glideHelper(R.drawable.t_minus_3);
+            case 4:
+                glideHelper(R.drawable.t_minus_4);
+            case 5:
+                glideHelper(R.drawable.t_minus_5);
+            case 6:
+                glideHelper(R.drawable.t_minus_6);
+        }
+    }
+
+    private void glideHelper(int imgRes) {
+        Glide.with(this)
+                .load(imgRes)
+                .into(mCountdown);
+    }
+
+    private void setTextInPosition(@NotNull TextView textView, int caseCount) {
+        textView.setText(String.valueOf(mCodeWord.charAt(caseCount))
+                .toUpperCase());
+        textView.setVisibility(View.VISIBLE);
+    }
+
+    public static void hideKeyboard(@NotNull Context context, View view) {
         InputMethodManager imm = (InputMethodManager) context.getSystemService(Activity.INPUT_METHOD_SERVICE);
         if (imm != null) {
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }
-
-//    public static void hideKeyboard(Activity activity) {
-//        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
-//        //Find the currently focused view, so we can grab the correct window token from it.
-//        View view = activity.getCurrentFocus();
-//        //If no view currently has focus, create a new one, just so we can grab a window token from it
-//        if (view == null) {
-//            view = new View(activity);
-//        }
-//        if (imm != null) {
-//            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-//        }
-//    }
 
     public void hideKeyboardOnKeyTouch(final EditText editText) {
 //        final int generatedKeyCode = KeyEvent.keyCodeFromString
