@@ -16,7 +16,10 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatImageView;
 import android.widget.Toast;
+
+import com.bumptech.glide.Glide;
 
 import java.util.Objects;
 
@@ -30,7 +33,7 @@ import timber.log.Timber;
 public abstract class BaseActivity extends AppCompatActivity {
 
 
-    private Unbinder mUnbinder;
+    public Unbinder mUnbinder;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -51,6 +54,12 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     protected abstract int getActivityLayout();
+
+    public void glideHelper(int imgRes, AppCompatImageView compatImageView) {
+        Glide.with(getApplicationContext())
+                .load(imgRes)
+                .into(compatImageView);
+    }
 
     public void setUnbinder(Unbinder unbinder) {
         mUnbinder = unbinder;

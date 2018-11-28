@@ -9,6 +9,7 @@
 package com.hendercine.android.codeword.view.mainview;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatImageView;
@@ -19,10 +20,10 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.hendercine.android.codeword.R;
 import com.hendercine.android.codeword.data.WordClient;
 import com.hendercine.android.codeword.view.base.BaseActivity;
+import com.hendercine.android.codeword.view.gameover.GameOverActivity;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -53,6 +54,7 @@ public class MainActivity extends BaseActivity {
     private static final String LETTER_4 = "letter_4";
     private static final String LETTER_5 = "letter_5";
     private static final String LETTER_6 = "letter_6";
+    private static final String HAS_WON = "hasWon";
 
     @BindView(R.id.guess_edit_text)
     EditText mGuessInput;
@@ -83,6 +85,8 @@ public class MainActivity extends BaseActivity {
     @SuppressWarnings("unused")
     private Subscription mSubscription;
     private Editable mUserInput;
+    private boolean mHasWon;
+    private GameOverActivity mGameOver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -200,7 +204,12 @@ public class MainActivity extends BaseActivity {
         }
         // Check for victory conditions
         if (mCorrectCount == mCodeWord.length()) {
-            showToast(R.string.you_win);
+            mHasWon = true;
+            Intent intent = new Intent();
+            intent.putExtra(HAS_WON, mHasWon);
+            mGameOver = new GameOverActivity();
+            mGameOver.startActivity(intent);
+//            showToast(R.string.you_win);
         }
         // Check for game end conditions
         if (!correctGuess && mCount > 1) {
@@ -280,33 +289,27 @@ public class MainActivity extends BaseActivity {
     private void setBombImage(int count) {
         switch (count) {
             case 0:
-                glideHelper(R.drawable.explosion_giphy);
+                glideHelper(R.drawable.explosion_giphy, mCountdown);
                 break;
             case 1:
-                glideHelper(R.drawable.last_guess);
+                glideHelper(R.drawable.last_guess, mCountdown);
                 break;
             case 2:
-                glideHelper(R.drawable.two_more_guesses);
+                glideHelper(R.drawable.two_more_guesses, mCountdown);
                 break;
             case 3:
-                glideHelper(R.drawable.three_left);
+                glideHelper(R.drawable.three_left, mCountdown);
                 break;
             case 4:
-                glideHelper(R.drawable.fourth_bomb);
+                glideHelper(R.drawable.fourth_bomb, mCountdown);
                 break;
             case 5:
-                glideHelper(R.drawable.t_minus_five);
+                glideHelper(R.drawable.t_minus_five, mCountdown);
                 break;
             case 6:
-                glideHelper(R.drawable.first_guess);
+                glideHelper(R.drawable.first_guess, mCountdown);
                 break;
         }
-    }
-
-    private void glideHelper(int imgRes) {
-        Glide.with(MainActivity.this)
-                .load(imgRes)
-                .into(mCountdown);
     }
 
     private void setTextInPosition(@NotNull TextView textView, int caseCount) {

@@ -16,5 +16,9 @@
     <string name="incorrect_letters">Incorrect Guesses</string>
     <string name="reset_btn">Reset Game</string>
     <string name="you_win">YOU HAVE DISCOVERED THE CODE WORD!! YOU WIN!!</string>
-    <string name="you_lose">NO MORE GUESSES GAME OVER</string>
+    <string name="you_lose">Code word not found. The planet has been
+        destroyed…\nGAME OVER</string>
+    <string name="game_over_gif">Game Over Gif</string>
+    <string name="the_world_is_safe">You stopped the bomb!\nThe world is
+        safe…\nfor now.</string>
 </resources>
