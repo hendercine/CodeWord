@@ -28,8 +28,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Random;
 
 import butterknife.BindView;
@@ -72,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
     private String mCodeWord;
     private int mCount;
     private int mCorrectCount;
-    private char[] mEnteredLetters;
+    private ArrayList<Character> mEnteredLetters;
     private StringBuilder mGuessedLettersBuilder;
     private ArrayList<String> mCodeWordsList;
     @SuppressWarnings("unused")
@@ -85,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
+        mEnteredLetters = new ArrayList<>();
         mCount = 6;
         mCorrectCount = 0;
         setBombImage(mCount);
@@ -107,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
         outState.putInt(CORRECT_COUNT, mCorrectCount);
         outState.putString(GUESS_STRING, mGuessStr);
         outState.putString(CODE_WORD, mCodeWord);
-        outState.putCharArray(ENTERED_LETTERS, mEnteredLetters);
+//        outState.putCharArray(ENTERED_LETTERS, mEnteredLetters);
         super.onSaveInstanceState(outState);
     }
 
@@ -142,7 +141,7 @@ public class MainActivity extends AppCompatActivity {
                                 .asList(wordsText.split("\\s+")));
                         mCodeWord = mCodeWordsList.get(new Random().nextInt(mCodeWordsList
                                 .size()));
-                        mEnteredLetters = new char[mCodeWord.length()];
+                        mEnteredLetters = new ArrayList<>();
                     }
                 });
     }
@@ -173,7 +172,13 @@ public class MainActivity extends AppCompatActivity {
 
     private void checkGuess(char guessLetter, @NotNull String codeWord) {
         boolean correctGuess = false;
+        if (mEnteredLetters.contains(guessLetter)) {
+            mUserInput.clear();
+            return;
+        }
+        mEnteredLetters.add(guessLetter);
         for (int i = 0; i < codeWord.length(); i++) {
+            // Check for correctness
             if (codeWord.charAt(i) == guessLetter) {
                 revealCorrectPositions(i);
                 correctGuess = true;
@@ -191,9 +196,9 @@ public class MainActivity extends AppCompatActivity {
         }
         // Check for game end conditions
         if (!correctGuess && mCount > 1) {
+            // Incorrect but still have guesses left
             setBombImage(mCount - 1);
-            mEnteredLetters = String.valueOf(guessLetter).toCharArray();
-            addGuessedLettersToView();
+            mGuessedLetters.setText(mGuessedLettersBuilder.append(guessLetter));
             mCount--;
         } else if (!correctGuess && mCount == 1) {
             // Set game lost conditions
@@ -205,28 +210,6 @@ public class MainActivity extends AppCompatActivity {
             ).show();
             revealCorrectPositions(6);
             mCount = 6;
-        }
-    }
-
-    private void addGuessedLettersToView() {
-        // Map entered chars
-        Map<Character, Integer> charMap = new HashMap<>();
-        for (char c : mEnteredLetters) {
-            if (charMap.containsKey(c)) {
-                int count = charMap.get(c);
-                charMap.put(c, ++count);
-            } else {
-                charMap.put(c, 1);
-            }
-        }
-        // Check mapped letters for duplicates and only display them once
-        int charCount = 1;
-        for (char c : charMap.keySet()) {
-            if (charMap.get(c) == charCount) {
-                mGuessedLetters.setText(mGuessedLettersBuilder
-                        .append(c).toString());
-                charCount++;
-            }
         }
     }
 
